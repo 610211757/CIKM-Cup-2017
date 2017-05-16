@@ -67,22 +67,22 @@ def getDataSet2(n, label_num):
             line[0] = labelSet[2]
             dataSet = list(map(int, line))
             rainfall = float(rainfall)
-            if(rainfall <= 5 and rainfall>0 and label_num==1):
+            if(rainfall <= 5 and rainfall>0 and label_num==0):
                 testName_all.append(testName)
                 rainfall_all.append(rainfall)
                 dataSet_all.append(dataSet)
                 dataSet_label.append(1)
-            if(rainfall>5 and rainfall<=19 and label_num==2):
+            if(rainfall>5 and rainfall<=19 and label_num==1):
                 testName_all.append(testName)
                 rainfall_all.append(rainfall)
                 dataSet_all.append(dataSet)
                 dataSet_label.append(2)
-            if(rainfall>19 and rainfall<=42 and label_num==3):
+            if(rainfall>19 and rainfall<=42 and label_num==2):
                 testName_all.append(testName)
                 rainfall_all.append(rainfall)
                 dataSet_all.append(dataSet)
                 dataSet_label.append(3)
-            if(rainfall>42 and label_num==4):
+            if(rainfall>42 and label_num==3):
                 testName_all.append(testName)
                 rainfall_all.append(rainfall)
                 dataSet_all.append(dataSet)
@@ -129,8 +129,8 @@ def train():
             dataSet = ipca.fit_transform(dataSet)
             dataSet_all[k].extend(dataSet)
             rainfall_all[k].extend(rainfall)
-            dataSet_label_all[k].extend(dataSet_label)
-
+            #dataSet_label_all[k].extend(dataSet_label) #此处不需要
+    print("cccccccccc")
     for i in range(4):
         gbdt = ensemble.GradientBoostingRegressor()
         gbdt.fit(dataSet_all[i], rainfall_all[i])  # 训练数据来学习，不需要返回值
@@ -175,7 +175,7 @@ def predict():
         fl.write("\n")
     fl.close()
     print("5")
-    
+
 
 
 
