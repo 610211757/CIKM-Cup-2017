@@ -114,6 +114,7 @@ def pre_train():
     joblib.dump(gbc, "rain_pretrain_GBDR.m")
     print("ddddddddddddddd")
 
+
 def train():
     dataSet_all = [[],[],[],[],[]]
     rainfall_all = [[],[],[],[],[]]
@@ -141,6 +142,7 @@ def train():
 def predict():
     os.chdir("E:\\李卓聪\\save_file\\machine_model")
     ipca = joblib.load("rain_ipca_model.m")
+    gbc = joblib.load("rain_pretrain_GBDR.m")
     gbdt1 = joblib.load("rain_train_GBDT_1.m")
     gbdt2 = joblib.load("rain_train_GBDT_2.m")
     gbdt3 = joblib.load("rain_train_GBDT_3.m")
@@ -151,27 +153,29 @@ def predict():
         testName, rainfall, dataSet, dataSet_label = getDataSet1(i)
         print("2")
         dataSet = ipca.fit_transform(dataSet)
+        print("2.5")
+        predict_label = gbc.predict(dataSet)
         print("3")
         for k in range(1000):
-            if(dataSet_label[k] == 1):
+            if(predict_label[k] == 1):
                 y = gbdt1.predict(dataSet[k])
-            if (dataSet_label[k] == 2):
+            if (predict_label[k] == 2):
                 y = gbdt2.predict(dataSet[k])
-            if (dataSet_label[k] == 3):
+            if (predict_label[k] == 3):
                 y = gbdt3.predict(dataSet[k])
-            if (dataSet_label[k] == 4):
+            if (predict_label[k] == 4):
                 y = gbdt4.predict(dataSet[k])
             result.append(y)
 
-        print("4")
-        save_file = "E:\\李卓聪\\save_file\\rainfall_predict\\" + "GBDT_result_" + str(i) + ".txt"
-        fl = open(save_file, 'w')
-        for k in y:
-            fl.write(str(k))
-            fl.write("\n")
-        fl.close()
-        print("5")
-    print("6")
+    print("4")
+    save_file = "E:\\李卓聪\\save_file\\rainfall_predict\\" + "GBDT_result_1"  + ".txt"
+    fl = open(save_file, 'w')
+    for k in result:
+        fl.write(str(k))
+        fl.write("\n")
+    fl.close()
+    print("5")
+    
 
 
 
